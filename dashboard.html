@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算力个人账户中心｜GPT大模型平台</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:思源黑体,微软雅黑;}
+        body{background:#f5f7fa;}
+        .top-nav{width:100%;background:#004795;color:#fff;padding:14px 30px;display:flex;justify-content:space-between;align-items:center;}
+        .container{width:90%;max-width:800px;margin:40px auto;}
+        .balance-card{background:#fff;border-radius:10px;padding:35px;border-left:6px solid #004795;box-shadow:0 2px 15px rgba(0,71,149,0.12);}
+        .balance-title{font-size:16px;color:#4a5568;margin-bottom:12px;}
+        .balance-num{font-size:42px;color:#004795;font-weight:bold;margin:10px 0;}
+        .info-line{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee;font-size:14px;color:#666;}
+        .logout-btn{margin-top:25px;padding:10px 22px;border:1px solid #004795;background:#fff;color:#004795;border-radius:6px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div>课题组GPT大模型算力管理系统｜个人中心</div>
+        <div id="showStuId"></div>
+    </div>
+    <div class="container">
+        <div class="balance-card">
+            <p class="balance-title">当前可用GPT算力余额（单位：点数）</p>
+            <div class="balance-num" id="userBalance">0</div>
+            <div class="info-line">
+                <span>账户状态：队内认证生效</span>
+                <span>运维管理员：在读博士组管</span>
+            </div>
+            <div class="info-line">
+                <span>使用说明：点数可用于GPT4.0、文献精读、代码生成算力调用</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">退出登录
+        </div>
+    </div>
+    <script src="config.js"></script>
+    <script>
+        const nowId = localStorage.getItem("nowUser")
+        if(!nowId) location.href="index.html"
+        document.getElementById("showStuId").innerText = "登录学号："+nowId
+        const userData = JSON.parse(atob(ENCRYPT_USER_DATA))
+        document.getElementById("userBalance").innerText = userData[nowId].balance
+        // 退出清空缓存
+        function logout(){
+            localStorage.clear()
+            location.href="index.html"
+        }
+    </script>
+</body>
+</html>
