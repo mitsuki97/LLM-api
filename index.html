@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课题组GPT智能算力管理平台｜校内专用</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"微软雅黑",思源黑体,高校官方字体;}
+        body{background:#f5f7fa;background:linear-gradient(120deg,#e8f0fb,#f6f8fc);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+        /* 高校官方主题蓝色 */
+        .school-blue{color:#004795;}
+        .bg-school{background:#004795;}
+        .login-card{width:420px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,71,149,0.15);overflow:hidden;border:1px solid #e2e8f0;}
+        .card-header{padding:20px;text-align:center;background:#004795;color:#fff;}
+        .card-header h2{font-size:20px;font-weight:600;}
+        .card-header p{font-size:13px;opacity:0.9;margin-top:6px;}
+        .card-body{padding:30px;}
+        .input-item{margin-bottom:20px;}
+        .input-item label{display:block;font-size:14px;color:#2d3748;margin-bottom:8px;}
+        .input-item input{width:100%;padding:12px 14px;border:1px solid #cbd5e0;border-radius:6px;font-size:15px;transition:0.3s;}
+        .input-item input:focus{outline:none;border-color:#004795;box-shadow:0 0 0 3px rgba(0,71,149,0.1);}
+        .login-btn{width:100%;padding:13px;border:none;border-radius:6px;background:#004795;color:#fff;font-size:16px;cursor:pointer;transition:0.3s;}
+        .login-btn:hover{background:#003a7c;}
+        .tip-text{margin-top:16px;text-align:center;font-size:12px;color:#718096;}
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="card-header">
+            <h2>课题组GPT大模型算力平台</h2>
+            <p>校内博士生课题组专属 · 非公益对外使用</p>
+        </div>
+        <div class="card-body">
+            <div class="input-item">
+                <label>校内学号</label>
+                <input type="text" id="stuId" placeholder="请输入科研学号">
+            </div>
+            <div class="input-item">
+                <label>课题组专属邀请码</label>
+                <input type="text" id="inviteCode" placeholder="请输入队内邀请码">
+            </div>
+            <button class="login-btn" onclick="userLogin()">进入算力中心</button>
+            <p class="tip-text">仅限本课题组师生使用｜管理员：在读博士运维</p>
+        </div>
+    </div>
+    <script src="config.js"></script>
+    <script>
+        // 登录校验逻辑
+        function userLogin(){
+            const stuId = document.getElementById("stuId").value.trim()
+            const code = document.getElementById("inviteCode").value.trim()
+            if(!stuId||!code) return alert("请填写完整学号与邀请码")
+            // 解密读取队内用户数据
+            const userData = JSON.parse(atob(ENCRYPT_USER_DATA))
+            if(!userData[stuId]) return alert("学号不存在，请核对队内学号")
+            if(userData[stuId].code !== code) return alert("邀请码错误，联系管理员核验")
+            // 登录缓存，免重复登录
+            localStorage.setItem("nowUser",stuId)
+            location.href="dashboard.html"
+        }
+    </script>
+</body>
+</html>
